@@ -72,3 +72,12 @@
    1. Now inspect the page and check, `data-test` attributes are gone!
 
 ---
+
+## Test setup summary
+
+1. Used Enzyme's `shallow()` function to render a component
+1. Tested that required DOM elements were rendered using `find()`
+1. Tested state using Enzyme's `setState()` and 'state()`
+1. Used `simulate` to interact with rendered elements (clicked button)
+1. Tested component for update after interaction
+1. Created re-usable `setup()` and `findByTestAttr()` functions
