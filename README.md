@@ -1,68 +1,74 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React with Jest and Enzyme
 
-## Available Scripts
+## How to add Jest and Enzyme to react project (create-react-app)
 
-In the project directory, you can run:
+1. Create react project using create-react-app
 
-### `yarn start`
+   ```javascript
+   npx create-react-app my-app
+   ```
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. Add `enzyme`, `jest-enzyme`, and `enyme-adapter-react-16` to the project as dev dependencies
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+   ```javascript
+   yarn add enzyme jest-enzyme enzyme-adapter-react-16 -d
+   ```
 
-### `yarn test`
+3. Add `jsconfig.json` to the root folder with `jest` type acquisition for jest intellisense/code completion.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```json
+   {
+     "typeAcquisition": {
+       "include": ["jest"]
+     }
+   }
+   ```
 
-### `yarn build`
+4. Add `data-test` attribute for testing the component if necessary
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   ```html
+   <div className="App" data-test="component-app">
+     <h1>Hello world!</h1>
+   </div>
+   ```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+5. Remove the `data-test' attribute from production
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   1. `yarn add babel-plugin-react-remove-properties -d`
 
-### `yarn eject`
+   1. `yarn run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+   1. Update babel config in `package.config`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+      ```json
+      {
+        "babel": {
+          // this configuration removes the data-test attribute
+          "env": {
+            "production": {
+              "plugins": [
+                [
+                  "react-remove-properties",
+                  {
+                    "properties": ["data-test"]
+                  }
+                ]
+              ]
+            }
+          },
+          "presets": ["react-app"]
+        }
+      }
+      ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+   1. Create production build
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+      ```javascript
+      yarn run build
+      yarn global add serve
+      server -s build
+      ```
 
-## Learn More
+   1. Now inspect the page and check, `data-test` attributes are gone!
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+---
